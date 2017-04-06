@@ -37,10 +37,11 @@ Describe -Name 'Connect-FTPServer' -Fixture {
     
        {Connect-FTPServer -Uri $($ValidParamHash.Uri.AbsoluteUri) -Credential $ValidParamHash.PSCredential} | Should -LegacyArg1 Not -LegacyArg2 Throw
     }
-    #Test3: with Certificate requirement: 
+<#Todo:    #Test3: with Certificate requirement: 
     It -name 'Test3: With RequiredCert, should fail without Cert' -test {
       {Connect-FTPServer -Uri $ValidParamHash.Uri.AbsoluteUri -Credential $ValidParamHash.PSCredential -RequireCertificate $true}| Should -LegacyArg1 not -LegacyArg2 Throw
-    }    
+    } 
+    #>   
   }
  }
  

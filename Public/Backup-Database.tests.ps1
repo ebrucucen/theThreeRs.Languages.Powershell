@@ -6,38 +6,42 @@
 
 #Test set for the function Backup-Database
 Describe 'Backup-Database' {
+
+
   BeforeAll{
+    Add-Type -Path 'C:\Program Files\Microsoft SQL Server\130\SDK\Assemblies\Microsoft.SqlServer.Smo.dll'
     $ValidParamHash=@{
-      Server='localhost'
+      ServerInstance='localhost'
       DatabaseList=@('master')
-      BackupPath=Join-Path -Path "C:\\DBBackups"
+      BackupToCustomDirectory=$true
+      BackupFile='C:\DBBackups'
       Overwrite=$false
-      }
-      $InvalidParamHash=@{
-        Server='abc'
-        DatabaseList=@('aa','bb')
-        BackupPath="T:\"
-        Overwrite=$false
-      }
+    }
+    $InvalidParamHash=@{
+      ServerInstance='abc'
+      DatabaseList=@('aa','bb')
+      BackupToCustomDirectory=$false
+      BackupFile='T:\'
+      Overwrite=$false
+    }
   }
   # scenario 1: call the function without arguments/invalid argument set
-  Context 'Running without arguments'   {
+  Context 'Running with invalid arguments'   {
     #Test 1: it does not throw an exception:
-    It 'Test 1: Throw Error when runs without arguments' {
-      { Backup-Database  } | Should Throw
+    It 'Test 1: Throw Error when runs with invalid arguments' {
+      { Backup-Database @InvalidParamHash } | Should Throw
     }
-       #Test 2: Throw Error with Invalid argument set
-    It 'Test 2: Throw Error with Invalid argument set' {
-      { Backup-Database } | Should Not Throw
-    }
-
   }
   #Scenario 2: Call the function with Valid argument set
-    Context 'Running with Valid argument set' { 
-      # Test 3: Create a backup with Valid argument set
-      It 'Test 3: Create a backup with Valid argument set'     {
-      #Backup-SqlDatabase -ServerInstance 'localhost' -Database master -BackupFile 'C:\DBBackups\master.1.bak' 
-        Backup-Database -ServerInstance $ValidParamHash.Server -DatabaseList $ValidParamHash.DatabaseList -BackupToCustomDirectory $ValidParamHash.BackupPath  | Should Not BeNullOrEmpty 
-      }
+  Context 'Running with Valid argument set' { 
+    #Test 2: Throw Error with Invalid argument set
+    It 'Test 2: Should Not Throw Error with valid argument set' {
+      { Backup-Database -ServerInstance 'localhost' -Databaselist @('master')} | Should Not Throw
     }
+    # Test 3: Create a backup with Valid argument set
+    It 'Test 3: Create a backup with Valid argument set'     {
+      #Backup-SqlDatabase -ServerInstance 'localhost' -Database master -BackupFile 'C:\DBBackups\master.1.bak' 
+      Backup-Database  -ServerInstance 'localhost' -Databaselist @('master') | Should Not BeNullOrEmpty 
+    }
+  }
 }
