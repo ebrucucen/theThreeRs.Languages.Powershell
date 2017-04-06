@@ -1,0 +1,18 @@
+# This is appveyor yml configuration to tell
+# what to do for each logical build/deployment phase: 
+# all the options are here: https://www.appveyor.com/docs/appveyor-yml/
+
+# we want disable the MSBuild
+build: off
+
+#Kick off the CI/CD pipeline
+before_build: 
+ - echo "started"
+ - ps: install-module invokebuild
+ - echo "installed"
+ - ps: import-module invokebuild
+ - echo "imported"
+
+#define the build script instead of automated MSBuild 
+build_script:
+  - ps: invoke-build
