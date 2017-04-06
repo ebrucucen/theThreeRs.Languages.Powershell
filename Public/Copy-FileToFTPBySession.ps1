@@ -39,7 +39,8 @@
     [String]$LocalAbsolutePath,
     [ValidateScript({[Uri]::IsWellFormedUriString($_, [System.UriKind]::Relative)})]
     [String]$TargetRelativePath='Backups',
-    [String]$SessionName='DefaultFTPSession',
+    [Parameter(Mandatory)]
+    [String]$SessionName,
     [Int]$BytesPerUpload=1024,
     [Bool]$Overwrite=$false        
   )
@@ -61,17 +62,18 @@
         $RequestStream=$Request.GetRequestStream()
         write-output "$($FileToCopy.Length) to be copied to FTP"
         $Stream=[System.IO.File]::OpenRead($FileToCopy)
-        $requestStream.
+        $TotalRead=0
         [Byte[]] $Buffer=New-Object Byte[] $BytesPerUpload
         do {
-        $Read=$Stream.Read($Buffer,0, $Buffer.Length)
-        $TotalRead+=$Read
-        $RequestStream.Write($Buffer,0,$Read)
-        }while ($TotalRead -ge $($FileToCopy.Length)  
+          $Read=$Stream.Read($Buffer,0, $Buffer.Length)
+          $TotalRead+=$Read
+          $RequestStream.Write($Buffer,0,$Read)
+        }while ($TotalRead -ge $($FileToCopy.Length))  
         $Request.GetResponse()
         $Request= Set-Variable -Name $SessionName -Scope Global -ErrorAction SilentlyContinue -ValueOnly
     }
     catch{
+      throw "Exception"
     }
   }
   end{
@@ -81,8 +83,8 @@
 # SIG # Begin signature block
 # MIID1QYJKoZIhvcNAQcCoIIDxjCCA8ICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU+BagYEcgIwEJZvO7MR8eG1/L
-# Jq+gggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUjNanvewT5CakH70FqQ8BX8Ca
+# TPmgggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
 # AQUFADAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wHhcNMTcwNDA0MTcyOTE4WhcNMjEw
 # NDA0MDAwMDAwWjAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wgZ8wDQYJKoZIhvcNAQEB
 # BQADgY0AMIGJAoGBALaiqPAw5V7MDzIYTFZ7UJIqhGj6oSGBmbQ2uhTLS5XUtBcM
@@ -96,8 +98,8 @@
 # BgNVBAMMCUVicnVDdWNlbgIQKHlG3QO1WqNE9W5SzyMHWTAJBgUrDgMCGgUAoHgw
 # GAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGC
 # NwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQx
-# FgQUhXfWFUIz3rRVFq8iMtVBXeqw4uUwDQYJKoZIhvcNAQEBBQAEgYBwRHNhsUUv
-# PLbm5YLW7IK+miQlXS16HYi6FCqZ/XCtTRmY+RQRJxEnwLXoAhmJQjS0PQWFmzWR
-# 7+G2Zaw85cNCmKEcGz6ORiD7k6czW/1gsM59iEWlTrtsV+17rs0x0PaTtT1LIFca
-# g2HCCHJrtZrOnaHqvpBFxYEAz6n1zkXntg==
+# FgQUs2iX7x5Tvh+yiPdCTTj6poFTRsMwDQYJKoZIhvcNAQEBBQAEgYCw+mspNj/i
+# DMg6EpN7ruTT4WC+Tch8M/4/tPEzrP+rEqSWdKwYxn2TR+565wIjH+iQm5MZG0JU
+# pLOG2jhWwljTG5WXeStQbhaXKxVlAX+iEDENoyc/h47YeC2LVZQdkN94IEfWQqhv
+# 6uycjquryZgtrR5UeboZghLYallWp14quQ==
 # SIG # End signature block

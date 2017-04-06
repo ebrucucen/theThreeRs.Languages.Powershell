@@ -9,7 +9,7 @@ Describe  -Name 'Connect-FTPServer Function Basic Tests' -Tags 'Basic,Connect-FT
       BeforeAll  {
         #Create a valid parameter set.
         $ValidParamHash=@{
-            Uri='ftp://localhost/DBBackups'
+            Uri=[System.Uri]'ftp://localhost/'
             PSCredential=New-Object -TypeName pscredential -ArgumentList ('abc',(ConvertTo-SecureString -String '123' -AsPlainText -Force))
           
         }
@@ -26,18 +26,18 @@ Describe -Name 'Connect-FTPServer' -Fixture {
   Context -Name 'Running with InValid Uri/Login arguments'   -Fixture {
     #Test1: it does not throw an exception:
     It -name 'Test1: Without Correct Uri/Login should Throw Exception' -test {
-      { Connect-FTPServer -Uri $InValidParamHash.Uri -Credential $InvalidParamHash.PSCredential} | Should -LegacyArg1 Throw
+      { Connect-FTPServer -Uri $InValidParamHash.Uri.AbsoluteUri -Credential $InvalidParamHash.PSCredential} | Should -LegacyArg1 Throw
     }
   }
   Context -Name 'Running with Valid Parametersets' -Fixture {
     #Test2: it returns nothing ($null):
     It -name 'Test2: With Valid Uri/Login Should Not Throw Exception' -test {
     
-       {Connect-FTPServer -Uri $($ValidParamHash.Uri) -Credential $ValidParamHash.PSCredential} | Should -LegacyArg1 Not -LegacyArg2 Throw
+       {Connect-FTPServer -Uri $($ValidParamHash.Uri.AbsoluteUri) -Credential $ValidParamHash.PSCredential} | Should -LegacyArg1 Not -LegacyArg2 Throw
     }
     #Test3: with Certificate requirement: 
     It -name 'Test3: With RequiredCert, should fail without Cert' -test {
-      {Connect-FTPServer -Uri $ValidParamHash.Uri -Credential $ValidParamHash.PSCredential -RequireCertificate $true}| Should -LegacyArg1 not -LegacyArg2 Throw
+      {Connect-FTPServer -Uri $ValidParamHash.Uri.AbsoluteUri -Credential $ValidParamHash.PSCredential -RequireCertificate $true}| Should -LegacyArg1 not -LegacyArg2 Throw
     }    
   }
  }

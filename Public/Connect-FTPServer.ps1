@@ -56,11 +56,7 @@ function Connect-FTPServer {
         [CmdletBinding()]
         param (
             [Parameter(Mandatory,HelpMessage='The FTP Server to be connected')]
-            [ValidateScript({if (!($_ -match 'ftp*')) {
-                    $Uri=Join-Path -Path 'ftp://' -ChildPath $Uri
-                  }
-                  [Uri]::IsWellFormedUriString($Uri, [System.UriKind]::Absolute)
-            })]
+            [ValidateScript({[Uri]::IsWellFormedUriString($_, [System.UriKind]::Absolute)})]
             [Uri]$Uri,
             [Parameter(Mandatory,HelpMessage='Credential for the FTP Session')]
             [System.Management.Automation.Credential()][pscredential]$Credential,
@@ -112,24 +108,35 @@ function Connect-FTPServer {
                 #Write the error object
           
                 write-output $info.Exception.ToString()
+                throw $info
             }
         }
         end{
           #Set the global variable as Request to be used later on: 
           if ($Response){
-            Set-Variable -Name $SessionName -Scope Global -Value $Request -Force
+            if((Get-Variable -Name $SessionName -Scope Global -ErrorAction SilentlyContinue) -eq $null) {
+              New-Variable -Name $SessionName -Scope Global -Value $Request -Force
+            }
+            else { 
+              if(!(Get-Variable -Name $SessionName).Value -eq $Request){
+                Set-Variable -Name $SessionName -Scope Global -Value $Request -Force
+              }
+              else{
+                Write-Output "already set the request"
+              }
+            }
             return $Request
           }
           else {
-            throw Exception
+            throw "Could not Get Response"
           }
         }
     }
 # SIG # Begin signature block
 # MIID1QYJKoZIhvcNAQcCoIIDxjCCA8ICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU6N60OyNiwCDRAhMCgDprgdLZ
-# gRegggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlYK4+B7vbU+TH50Ptqyj0g/D
+# t5agggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
 # AQUFADAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wHhcNMTcwNDA0MTcyOTE4WhcNMjEw
 # NDA0MDAwMDAwWjAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wgZ8wDQYJKoZIhvcNAQEB
 # BQADgY0AMIGJAoGBALaiqPAw5V7MDzIYTFZ7UJIqhGj6oSGBmbQ2uhTLS5XUtBcM
@@ -143,8 +150,8 @@ function Connect-FTPServer {
 # BgNVBAMMCUVicnVDdWNlbgIQKHlG3QO1WqNE9W5SzyMHWTAJBgUrDgMCGgUAoHgw
 # GAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGC
 # NwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQx
-# FgQUFd3TNxohR4nob384W9VLldPLragwDQYJKoZIhvcNAQEBBQAEgYCbCwfshgwo
-# GxXE0YxnDoH0/kb6B2Ne5jafrAoP6zGjEtLJII9fJtD+ULAHeE+S164HGXuMuHw+
-# +rbwWbYKylWYsHs+9mKdIjXj43PC3do6aTEyr7RY2bAXlkf0WSBIfAwXaVEm/A1c
-# RvvDOduXNBdAgBKqhFNgmvh03PL5vctgYQ==
+# FgQUa+F59e411XlICcfBSvpWSlMPUFwwDQYJKoZIhvcNAQEBBQAEgYBmDyb5a3xD
+# 1UcNLcS7bhsPS5m/zQnyn3HGpmAWeqpuagnbbxwA/IBLl2xM6DaihL/AVu9cs/at
+# 60N0gbUtGnE5G2luXIxN9OPYrntGYj9LP15aQMw0n8jAuZma+v6TV6sZJPg0OBiN
+# Mk4E3wTGOPZuxIrzltw9xMYK4VAhCFSDPA==
 # SIG # End signature block
