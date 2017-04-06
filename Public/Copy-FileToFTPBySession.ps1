@@ -44,6 +44,7 @@
     [Int]$BytesPerUpload=1024,
     [Bool]$Overwrite=$false        
   )
+  
   begin{
     #Check the Session, if can't find it, we should throw exception, else get the Request object on this variable.
     if((Get-Variable -Name $SessionName -Scope Global -ErrorAction SilentlyContinue) -eq $null){
@@ -83,8 +84,8 @@
 # SIG # Begin signature block
 # MIID1QYJKoZIhvcNAQcCoIIDxjCCA8ICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUjNanvewT5CakH70FqQ8BX8Ca
-# TPmgggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUQZ17VKfaGcyzH9vv4vYSe9Xw
+# IdGgggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
 # AQUFADAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wHhcNMTcwNDA0MTcyOTE4WhcNMjEw
 # NDA0MDAwMDAwWjAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wgZ8wDQYJKoZIhvcNAQEB
 # BQADgY0AMIGJAoGBALaiqPAw5V7MDzIYTFZ7UJIqhGj6oSGBmbQ2uhTLS5XUtBcM
@@ -98,8 +99,8 @@
 # BgNVBAMMCUVicnVDdWNlbgIQKHlG3QO1WqNE9W5SzyMHWTAJBgUrDgMCGgUAoHgw
 # GAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGC
 # NwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQx
-# FgQUs2iX7x5Tvh+yiPdCTTj6poFTRsMwDQYJKoZIhvcNAQEBBQAEgYCw+mspNj/i
-# DMg6EpN7ruTT4WC+Tch8M/4/tPEzrP+rEqSWdKwYxn2TR+565wIjH+iQm5MZG0JU
-# pLOG2jhWwljTG5WXeStQbhaXKxVlAX+iEDENoyc/h47YeC2LVZQdkN94IEfWQqhv
-# 6uycjquryZgtrR5UeboZghLYallWp14quQ==
+# FgQUy8dPrlJocFkPAeK7tBi7to1VUyowDQYJKoZIhvcNAQEBBQAEgYA4p++0Ny4y
+# St82Rwj1FMR68VZa1Ns05yAOXc4hIceTlZnRwRNaNrnYFlyM4lmAxHfbI7bNKyWD
+# 32xsdDELroviUlSDKDyoMzniJzXvD8o2JpDusJ/pJx+i01jZsQLlksEab1LT3DqJ
+# J2F8dQio9vXPmMCHfTV5O2UhON9eYVjCMw==
 # SIG # End signature block

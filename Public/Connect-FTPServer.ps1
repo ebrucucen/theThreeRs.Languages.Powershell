@@ -69,7 +69,28 @@ function Connect-FTPServer {
             [Switch]$RequireCertificate=$false,
             [System.Net.Cache.HttpRequestCacheLevel] $CachePolicyLevel=[System.Net.Cache.HttpRequestCacheLevel]::NoCacheNoStore
         )
-        
+      DynamicParam {
+        if ($RequireCertificate) {
+            #create a new ParameterAttribute Object
+            $certificateAttribute = New-Object System.Management.Automation.ParameterAttribute
+            $certificateAttribute.Mandatory = $true
+            $certificateAttribute.HelpMessage = "Certificate is required"
+ 
+            #create an attributecollection object for the certificate attribute.
+            $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
+ 
+            #add the certificate attribute to the collection.
+            $attributeCollection.Add($certificateAttribute)
+ 
+            #add the certificate paramater specifying the attribute collection.
+            $certificateParam = New-Object System.Management.Automation.RuntimeDefinedParameter('Certificates', [System.Security.Cryptography.X509Certificates.X509CertificateCollection], $attributeCollection)
+ 
+            #add the name of certificate parameter to the dictionary to be added $psboundparameter list.
+            $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+            $paramDictionary.Add('Certificates', $certificateParam)
+            return $paramDictionary
+       }
+   }  
         begin {
         #Clean if there are any previous sessions/requests open
          if(!(Get-Variable -Name $SessionName -Scope Global -ErrorAction SilentlyContinue) -eq $null){
@@ -88,6 +109,9 @@ function Connect-FTPServer {
             $Request.UseBinary=$UseBinary
             $Request.CachePolicy=New-Object -TypeName System.Net.Cache.HttpRequestCachePolicy -ArgumentList ($CachePolicyLevel)
             $Request.Method=[System.Net.WebRequestMethods+FTP]::ListDirectoryDetails
+            if($RequireCertificate) {
+              $Request.ClientCertificates=$PSBoundParameters.Certificates
+            }
             try{
               $Response=$Request.GetResponse()        
               $Response.Close() 
@@ -135,8 +159,8 @@ function Connect-FTPServer {
 # SIG # Begin signature block
 # MIID1QYJKoZIhvcNAQcCoIIDxjCCA8ICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlYK4+B7vbU+TH50Ptqyj0g/D
-# t5agggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUc1UpbuDM4jkpIK/0TR0WxtNo
+# rAqgggH3MIIB8zCCAVygAwIBAgIQKHlG3QO1WqNE9W5SzyMHWTANBgkqhkiG9w0B
 # AQUFADAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wHhcNMTcwNDA0MTcyOTE4WhcNMjEw
 # NDA0MDAwMDAwWjAUMRIwEAYDVQQDDAlFYnJ1Q3VjZW4wgZ8wDQYJKoZIhvcNAQEB
 # BQADgY0AMIGJAoGBALaiqPAw5V7MDzIYTFZ7UJIqhGj6oSGBmbQ2uhTLS5XUtBcM
@@ -150,8 +174,8 @@ function Connect-FTPServer {
 # BgNVBAMMCUVicnVDdWNlbgIQKHlG3QO1WqNE9W5SzyMHWTAJBgUrDgMCGgUAoHgw
 # GAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGC
 # NwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQx
-# FgQUa+F59e411XlICcfBSvpWSlMPUFwwDQYJKoZIhvcNAQEBBQAEgYBmDyb5a3xD
-# 1UcNLcS7bhsPS5m/zQnyn3HGpmAWeqpuagnbbxwA/IBLl2xM6DaihL/AVu9cs/at
-# 60N0gbUtGnE5G2luXIxN9OPYrntGYj9LP15aQMw0n8jAuZma+v6TV6sZJPg0OBiN
-# Mk4E3wTGOPZuxIrzltw9xMYK4VAhCFSDPA==
+# FgQUpvH0d+P03biJyHu5CU4Aa6LrfpkwDQYJKoZIhvcNAQEBBQAEgYBfcQHVfFPA
+# BHRY5ik/YeO9V72vspz1Utzp2w5T43v1urDgWJxSCt7+eVNithgujbx5/+zGh1BM
+# T3eg+v0cEdL3bMieVNL4hw+ayBC052xIJXspfKmF1o2xXt9Usggszj5NzbZMte0P
+# WkKmgkGcq7k8SmrUehmfJaQe7UEmWsimAg==
 # SIG # End signature block

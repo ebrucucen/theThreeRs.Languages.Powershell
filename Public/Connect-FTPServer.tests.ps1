@@ -11,6 +11,8 @@ Describe  -Name 'Connect-FTPServer Function Basic Tests' -Tags 'Basic,Connect-FT
         $ValidParamHash=@{
             Uri=[System.Uri]'ftp://localhost/'
             PSCredential=New-Object -TypeName pscredential -ArgumentList ('abc',(ConvertTo-SecureString -String '123' -AsPlainText -Force))
+          #Todo: add valid/invalid cert
+          # Certificates=New-Object -TypeName System.Security.Cryptography.X509Certificates.X509CertificateCollection  
           
         }
         #Create a dummy parameter set.
