@@ -9,7 +9,7 @@ Describe 'Backup-Database' {
 
 
   BeforeAll{
-    Add-Type -Path 'C:\Program Files\Microsoft SQL Server\130\SDK\Assemblies\Microsoft.SqlServer.Smo.dll'
+    #Add-Type -Path 'C:\Program Files\Microsoft SQL Server\130\SDK\Assemblies\Microsoft.SqlServer.Smo.dll'
     $ValidParamHash=@{
       ServerInstance='localhost'
       DatabaseList=@('master')

@@ -7,7 +7,7 @@
 #Tests for Copy-FileToFTPBySession
 Describe 'Copy-FileToFTPBySession' {
   BeforeAll  {
-  Import-Module ..\PSSqlBackupFTP.psm1
+  #Import-Module (Join-Path -PAth $PSScriptRoot -ChildPath "..\PSSqlBackupFTP.psm1")
     #Create a valid parameter set.
     $ValidParamHash=@{
       Uri='ftp://localhost/DBBackups'
