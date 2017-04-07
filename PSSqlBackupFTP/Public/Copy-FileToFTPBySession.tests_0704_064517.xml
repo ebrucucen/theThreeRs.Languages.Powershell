@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="1" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2017-04-07" time="06:45:20">
+  <environment user="Administrator" machine-name="WIN-TMO80QKEEO6" cwd="C:\repo\github.com\theThreeRs.Languages.Powershell" user-domain="WIN-TMO80QKEEO6" platform="Microsoft Windows Server 2012 R2 Standard|C:\Windows|\Device\Harddisk0\Partition2" nunit-version="2.5.8.0" os-version="6.3.9600" clr-version="4.0.30319.42000" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="0.0742" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\repo\github.com\theThreeRs.Languages.Powershell\Public\Copy-FileToFTPBySession.tests.ps1" executed="True" result="Failure" success="False" time="0.0742" asserts="0" description="C:\repo\github.com\theThreeRs.Languages.Powershell\Public\Copy-FileToFTPBySession.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Copy-FileToFTPBySession" executed="True" result="Failure" success="False" time="0.0742" asserts="0" description="Copy-FileToFTPBySession">
+            <results>
+              <test-case description="Error occurred in Describe block" name="Copy-FileToFTPBySession.Error occurred in Describe block" time="0.0742" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>The term 'Connect-FTPServer' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                  <stack-trace>At C:\repo\github.com\theThreeRs.Languages.Powershell\Public\Copy-FileToFTPBySession.tests.ps1:21 char:14</stack-trace>
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

@@ -6,12 +6,15 @@
 build: off
 
 #Kick off the CI/CD pipeline
-before_build: 
+before_build:
+#https://msdn.microsoft.com/en-us/powershell/wmf/5.1/install-configure 
  - echo "started"
  - ps: install-module invokebuild
- - echo "installed"
+ - echo "installed invokebuild module"
  - ps: import-module invokebuild
- - echo "imported"
+ - echo "imported invokebuild module"
+ - ps: import-module sqlps
+ - echo "imported sqlps module"
 
 #define the build script instead of automated MSBuild 
 build_script:
